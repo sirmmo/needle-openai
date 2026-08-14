@@ -1,6 +1,6 @@
 # Pinned below the next major: MkDocs 2.0 removes the plugin system and theme
 # overrides with no migration path, which would break this site's build.
 # https://squidfunk.github.io/mkdocs-material/blog/2026/02/18/mkdocs-2.0/
-mkdocs>=1.6,<2
+mkdocs>=1.6.1,<2
 mkdocs-material>=9.5,<10
 pymdown-extensions>=10.7,<11
