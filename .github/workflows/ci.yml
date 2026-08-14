@@ -93,7 +93,9 @@ jobs:
       - name: Live tests against the real engine
         env:
           NEEDLE_TEST_BASE_URL: http://127.0.0.1:8000
-        run: pytest -m live -q
+        # Only the live file is collected: this job installs no server
+        # dependencies, so it talks to the container purely over HTTP.
+        run: pytest tests/test_live.py -m live -q
 
       - name: Server logs
         if: always()

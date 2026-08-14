@@ -6,7 +6,7 @@ import json
 
 import pytest
 
-from conftest import needle_response
+from fakes import needle_response
 from needle_openai import translate
 from needle_openai.engine import EngineResult
 from needle_openai.translate import TranslationError

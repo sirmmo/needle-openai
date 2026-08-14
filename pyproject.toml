@@ -41,6 +41,9 @@ include = ["needle_openai*"]
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]
+# Put the repo root on sys.path so a bare `pytest` works the same as
+# `python -m pytest` (the latter adds the cwd implicitly, the former does not).
+pythonpath = ["."]
 markers = [
     "live: requires the real Needle engine (downloads ~14MB of weights from HuggingFace)",
 ]
@@ -56,9 +59,10 @@ ignore = [
 ]
 
 [tool.ruff.lint.per-file-ignores]
-# Tests import fixtures from conftest via pytest's rootdir sys.path insertion.
+# pytest.skip() before imports in the live suite, guarding on the server URL.
 "tests/*" = ["E402"]
 
 [tool.ruff.lint.isort]
-# conftest is imported bare (pytest puts tests/ on sys.path), not as a package.
-known-first-party = ["needle_openai", "conftest"]
+# `fakes` and `conftest` are imported bare -- pytest puts tests/ on sys.path,
+# so they are modules rather than a package.
+known-first-party = ["needle_openai", "conftest", "fakes"]

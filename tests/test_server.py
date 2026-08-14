@@ -6,7 +6,7 @@ import json
 
 from fastapi.testclient import TestClient
 
-from conftest import FakeEngine, needle_response
+from fakes import FakeEngine, needle_response
 from needle_openai.config import Settings
 from needle_openai.server import create_app
 from needle_openai.tokens import TokenCounter
