@@ -1,0 +1,64 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "needle-openai"
+version = "0.1.0"
+description = "OpenAI-compatible HTTP API for the Needle 2 tool-calling model"
+readme = "README.md"
+requires-python = ">=3.10"
+license = { text = "MIT" }
+
+# cactus-needle is deliberately NOT a hard dependency. Inference is a ctypes
+# call into libneedle.so and needs only huggingface_hub, but cactus-needle also
+# declares jax/jaxlib/flax/optax for training and export -- over a gigabyte that
+# a server never uses. Install it without its dependency tree instead:
+#
+#     pip install needle-openai
+#     pip install --no-deps cactus-needle==2.0.3
+#
+# The `engine` extra below pulls it in the normal way (jax included) for anyone
+# who wants a single command and does not care about the size.
+dependencies = [
+    "huggingface_hub>=0.23",
+    "fastapi>=0.110",
+    "uvicorn[standard]>=0.27",
+    "pydantic>=2.6",
+]
+
+[project.optional-dependencies]
+engine = ["cactus-needle==2.0.3"]
+# Exact prompt-token accounting instead of the character heuristic.
+tokenizer = ["sentencepiece>=0.2"]
+test = ["pytest>=8", "httpx>=0.27"]
+
+[project.scripts]
+needle-openai = "needle_openai.__main__:main"
+
+[tool.setuptools.packages.find]
+include = ["needle_openai*"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+markers = [
+    "live: requires the real Needle engine (downloads ~14MB of weights from HuggingFace)",
+]
+
+[tool.ruff]
+line-length = 100
+target-version = "py310"
+
+[tool.ruff.lint]
+select = ["E", "F", "W", "I", "UP", "B", "C4", "SIM"]
+ignore = [
+    "B008",  # FastAPI's Depends()/Header() defaults are the documented idiom.
+]
+
+[tool.ruff.lint.per-file-ignores]
+# Tests import fixtures from conftest via pytest's rootdir sys.path insertion.
+"tests/*" = ["E402"]
+
+[tool.ruff.lint.isort]
+# conftest is imported bare (pytest puts tests/ on sys.path), not as a package.
+known-first-party = ["needle_openai", "conftest"]

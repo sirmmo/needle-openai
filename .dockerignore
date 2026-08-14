@@ -1,0 +1,9 @@
+.git
+.venv
+weights/*.cact
+tests
+examples
+**/__pycache__
+*.pyc
+.pytest_cache
+.env

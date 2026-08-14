@@ -1,0 +1,31 @@
+services:
+  needle-openai:
+    build:
+      context: .
+      # Use target `full` for exact token counts (adds sentencepiece).
+      target: base
+    image: needle-openai:0.1.0
+    ports:
+      - "${NEEDLE_PORT:-8000}:8000"
+    environment:
+      # Optional bearer token. Leave unset to serve unauthenticated.
+      NEEDLE_API_KEY: "${NEEDLE_API_KEY:-}"
+      NEEDLE_MODEL_ID: "${NEEDLE_MODEL_ID:-needle-2}"
+      NEEDLE_MAX_NEW_TOKENS: "${NEEDLE_MAX_NEW_TOKENS:-256}"
+      NEEDLE_MAX_QUEUE_DEPTH: "${NEEDLE_MAX_QUEUE_DEPTH:-32}"
+      # A HuggingFace token avoids anonymous rate limits on the first download.
+      HF_TOKEN: "${HF_TOKEN:-}"
+      # Point at a tuned .cact mounted below, e.g. /weights/needle_tuned.cact
+      NEEDLE_WEIGHTS: "${NEEDLE_WEIGHTS:-}"
+    volumes:
+      # Persist the engine binary and weights across restarts.
+      - needle-cache:/cache
+      # Drop tuned .cact archives here and set NEEDLE_WEIGHTS.
+      - ./weights:/weights:ro
+    restart: unless-stopped
+    # The model is 45M parameters and reported ~34-94MB peak RAM in testing;
+    # the ceiling here is generous headroom for Python and the HTTP stack.
+    mem_limit: 1g
+
+volumes:
+  needle-cache:

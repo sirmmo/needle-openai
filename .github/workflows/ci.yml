@@ -1,0 +1,100 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  lint:
+    name: Lint
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: pip install ruff
+      - run: ruff check --output-format=github .
+      - run: ruff format --check .
+
+  test:
+    name: Unit tests (py${{ matrix.python-version }})
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        python-version: ["3.10", "3.11", "3.12", "3.13"]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python-version }}
+          cache: pip
+      # The unit suite drives the HTTP surface through a fake engine, so it
+      # needs no native library and no model download.
+      - run: pip install -r requirements.txt pytest httpx
+      - run: pytest -q
+
+  docker:
+    name: Image build + live engine tests
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: docker/setup-buildx-action@v3
+
+      - name: Build image
+        uses: docker/build-push-action@v6
+        with:
+          context: .
+          target: full
+          load: true
+          tags: needle-openai:ci
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
+
+      - name: Start server
+        env:
+          # Optional: avoids anonymous HuggingFace rate limits.
+          HF_TOKEN: ${{ secrets.HF_TOKEN }}
+        run: |
+          docker run -d --name needle -p 8000:8000 \
+            -e HF_TOKEN="${HF_TOKEN}" \
+            needle-openai:ci
+
+      - name: Wait for the engine to load
+        run: |
+          # First start downloads the engine and weights from HuggingFace.
+          for i in $(seq 1 120); do
+            if curl -sf -m 3 http://127.0.0.1:8000/health | grep -q '"ok"'; then
+              echo "ready after ${i}s"
+              curl -s http://127.0.0.1:8000/health
+              exit 0
+            fi
+            sleep 1
+          done
+          echo "::error::engine did not become ready in 120s"
+          docker logs needle
+          exit 1
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+
+      - run: pip install pytest httpx
+
+      - name: Live tests against the real engine
+        env:
+          NEEDLE_TEST_BASE_URL: http://127.0.0.1:8000
+        run: pytest -m live -q
+
+      - name: Server logs
+        if: always()
+        run: docker logs needle

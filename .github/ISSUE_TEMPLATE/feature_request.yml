@@ -1,0 +1,32 @@
+name: Feature request
+description: Suggest an addition to the OpenAI-compatible surface
+labels: [enhancement]
+body:
+  - type: textarea
+    id: problem
+    attributes:
+      label: What are you trying to do?
+      description: The use case, not just the proposed API.
+    validations:
+      required: true
+
+  - type: textarea
+    id: proposal
+    attributes:
+      label: Proposal
+      description: >
+        What should the server accept or return? If this mirrors part of the
+        OpenAI API, a link to those docs helps.
+    validations:
+      required: true
+
+  - type: textarea
+    id: feasibility
+    attributes:
+      label: Can Needle 2 actually do this?
+      description: >
+        Optional, but valuable. Needle exposes a narrow FFI — `needle_init`,
+        `needle_complete`, `needle_reset`, `needle_load` — with no sampling
+        controls, no token streaming and no way to inject an assistant turn.
+        Requests that need capabilities the model lacks cannot be wrapped into
+        existence. If you have probed the engine, say what you found.

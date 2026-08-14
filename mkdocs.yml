@@ -1,0 +1,67 @@
+site_name: needle-openai
+site_description: OpenAI-compatible HTTP API for the Needle 2 tool-calling model
+site_url: https://sirmmo.github.io/needle-openai/
+repo_url: https://github.com/sirmmo/needle-openai
+repo_name: sirmmo/needle-openai
+edit_uri: edit/main/docs/
+copyright: MIT licensed. Needle 2 is published by Cactus Compute.
+
+theme:
+  name: material
+  palette:
+    - media: "(prefers-color-scheme: light)"
+      scheme: default
+      primary: indigo
+      accent: indigo
+      toggle:
+        icon: material/weather-night
+        name: Switch to dark mode
+    - media: "(prefers-color-scheme: dark)"
+      scheme: slate
+      primary: indigo
+      accent: indigo
+      toggle:
+        icon: material/weather-sunny
+        name: Switch to light mode
+  features:
+    - navigation.instant
+    - navigation.tracking
+    - navigation.sections
+    - navigation.top
+    - content.code.copy
+    - content.action.edit
+    - search.suggest
+    - toc.follow
+
+nav:
+  - Overview: index.md
+  - Quickstart: quickstart.md
+  - API reference: api-reference.md
+  - Fidelity notes: fidelity.md
+  - Configuration: configuration.md
+  - Architecture: architecture.md
+  - Development: development.md
+
+markdown_extensions:
+  - admonition
+  - attr_list
+  - def_list
+  - tables
+  - toc:
+      permalink: true
+  - pymdownx.details
+  - pymdownx.superfences
+  - pymdownx.tabbed:
+      alternate_style: true
+  - pymdownx.highlight:
+      anchor_linenums: true
+  - pymdownx.inlinehilite
+  - pymdownx.snippets
+
+plugins:
+  - search
+
+extra:
+  social:
+    - icon: fontawesome/brands/github
+      link: https://github.com/sirmmo/needle-openai

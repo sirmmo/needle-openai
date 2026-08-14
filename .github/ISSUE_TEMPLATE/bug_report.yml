@@ -1,0 +1,76 @@
+name: Bug report
+description: Something behaves differently than documented
+labels: [bug]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Before filing: please check the
+        [fidelity notes](https://sirmmo.github.io/needle-openai/fidelity/). Several
+        surprising behaviours are properties of Needle 2 itself and are documented
+        there — no free-form text, ignored sampling parameters, dropped assistant
+        messages, silent truncation on long inputs.
+
+  - type: textarea
+    id: what-happened
+    attributes:
+      label: What happened
+      description: What you expected, and what you got instead.
+    validations:
+      required: true
+
+  - type: textarea
+    id: request
+    attributes:
+      label: Request
+      description: The request body that triggers it (redact anything sensitive).
+      render: json
+    validations:
+      required: true
+
+  - type: textarea
+    id: response
+    attributes:
+      label: Response
+      description: >
+        The full response, including the `x_needle` block if present. `confidence`
+        and `type` are often the fastest clue.
+      render: json
+
+  - type: textarea
+    id: health
+    attributes:
+      label: Output of `GET /health`
+      render: json
+    validations:
+      required: true
+
+  - type: textarea
+    id: logs
+    attributes:
+      label: Server logs
+      description: >
+        `docker logs <container>`. Important for crashes or hangs — a segfault in
+        the native engine leaves little behind, so surrounding lines matter.
+      render: shell
+
+  - type: input
+    id: version
+    attributes:
+      label: Version
+      description: Image tag, PyPI version, or commit SHA.
+    validations:
+      required: true
+
+  - type: dropdown
+    id: how-run
+    attributes:
+      label: How are you running it?
+      options:
+        - Docker Compose
+        - Docker (ghcr.io image)
+        - Docker (local build)
+        - Python package / from source
+        - Other
+    validations:
+      required: true
