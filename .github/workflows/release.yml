@@ -28,6 +28,9 @@ jobs:
   pypi:
     name: Publish to PyPI
     needs: build
+    # Publishing jobs are tag-only, so a manual workflow_dispatch run is a safe
+    # dry run: it builds and checks the distributions and stops there.
+    if: startsWith(github.ref, 'refs/tags/v')
     runs-on: ubuntu-latest
     environment: pypi
     permissions:
@@ -44,6 +47,7 @@ jobs:
 
   container:
     name: Publish container to GHCR
+    if: startsWith(github.ref, 'refs/tags/v')
     runs-on: ubuntu-latest
     permissions:
       contents: read
@@ -67,7 +71,10 @@ jobs:
           tags: |
             type=semver,pattern={{version}}
             type=semver,pattern={{major}}.{{minor}}
-            type=raw,value=latest,enable={{is_default_branch}}
+            # `latest` tracks the newest stable tag -- the README tells people to
+            # pull it. `is_default_branch` would never match here, since this job
+            # only ever runs on a tag ref. Prereleases (v1.0.0-rc1) are excluded.
+            type=raw,value=latest,enable=${{ !contains(github.ref_name, '-') }}
 
       - name: Build and push
         uses: docker/build-push-action@v6
@@ -86,6 +93,7 @@ jobs:
   github-release:
     name: GitHub release
     needs: [build, container]
+    if: startsWith(github.ref, 'refs/tags/v')
     runs-on: ubuntu-latest
     permissions:
       contents: write
