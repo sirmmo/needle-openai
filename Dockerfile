@@ -3,7 +3,7 @@
 # jax/flax/optax/sentencepiece for training and export, which this image does
 # not do -- installing it with --no-deps keeps the image near 200MB instead of
 # well over 1GB. See README "Why --no-deps".
-FROM python:3.12-slim AS base
+FROM python:3.14-slim AS base
 
 ENV PYTHONUNBUFFERED=1 \
     PYTHONDONTWRITEBYTECODE=1 \
