@@ -1,6 +1,6 @@
 site_name: needle-openai
 site_description: OpenAI-compatible HTTP API for the Needle 2 tool-calling model
-site_url: https://sirmmo.github.io/needle-openai/
+site_url: https://ingmmo.com/needle-openai/
 repo_url: https://github.com/sirmmo/needle-openai
 repo_name: sirmmo/needle-openai
 edit_uri: edit/main/docs/

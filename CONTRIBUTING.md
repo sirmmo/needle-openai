@@ -33,13 +33,13 @@ confinement — the symptom would be a crash under load in production instead.
 **Document limitations rather than hiding them.** If Needle cannot do something
 an OpenAI client expects, the right outcome is a clear 400 or a warning in
 `x_needle.warnings`, plus an entry in
-[`docs/fidelity.md`](https://sirmmo.github.io/needle-openai/fidelity/). Silently
+[`docs/fidelity.md`](https://ingmmo.com/needle-openai/fidelity/). Silently
 accepting a parameter that does nothing is the thing we are trying to avoid.
 
 **Verify claims against the real engine.** Most of this project's design came
 from probing `libneedle.so` directly rather than trusting documentation. If you
 assert the model behaves some way, please include how you checked — see
-[Probing the model directly](https://sirmmo.github.io/needle-openai/development/#probing-the-model-directly).
+[Probing the model directly](https://ingmmo.com/needle-openai/development/#probing-the-model-directly).
 
 ## Pull requests
 

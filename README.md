@@ -1,7 +1,7 @@
 # needle-openai
 
 [![CI](https://github.com/sirmmo/needle-openai/actions/workflows/ci.yml/badge.svg)](https://github.com/sirmmo/needle-openai/actions/workflows/ci.yml)
-[![Docs](https://github.com/sirmmo/needle-openai/actions/workflows/docs.yml/badge.svg)](https://sirmmo.github.io/needle-openai/)
+[![Docs](https://github.com/sirmmo/needle-openai/actions/workflows/docs.yml/badge.svg)](https://ingmmo.com/needle-openai/)
 [![PyPI](https://img.shields.io/pypi/v/needle-openai)](https://pypi.org/project/needle-openai/)
 [![Python](https://img.shields.io/pypi/pyversions/needle-openai)](https://pypi.org/project/needle-openai/)
 [![License: MIT](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
@@ -11,7 +11,7 @@ Cactus Compute's 45M-parameter model for tool calling, device use and structured
 extraction. Point any OpenAI client at it and get function calls back from a
 14MB model that runs on CPU in ~100MB of RAM.
 
-📖 **[Full documentation](https://sirmmo.github.io/needle-openai/)**
+📖 **[Full documentation](https://ingmmo.com/needle-openai/)**
 
 ```python
 from openai import OpenAI
@@ -43,7 +43,7 @@ print(response.choices[0].message.tool_calls[0].function)
 > [!IMPORTANT]
 > Needle 2 is **not a chat model.** It emits tool calls or nothing at all — it has
 > no free-form generation head. Read the
-> [fidelity notes](https://sirmmo.github.io/needle-openai/fidelity/) before
+> [fidelity notes](https://ingmmo.com/needle-openai/fidelity/) before
 > building on this; they list every place the OpenAI mapping is lossy and the two
 > failure modes worth guarding against.
 
@@ -96,11 +96,11 @@ Runnable examples: [`examples/openai_client.py`](examples/openai_client.py) and
 | `POST /v1/needle/complete` | Passthrough returning the engine's raw response. |
 | `GET /health` | Readiness, queue depth, token-count mode. |
 
-Full details in the [API reference](https://sirmmo.github.io/needle-openai/api-reference/).
+Full details in the [API reference](https://ingmmo.com/needle-openai/api-reference/).
 
 ## Key things to know
 
-A short version of the [fidelity notes](https://sirmmo.github.io/needle-openai/fidelity/):
+A short version of the [fidelity notes](https://ingmmo.com/needle-openai/fidelity/):
 
 - **No free-form text.** When no tool is called, the model's `reasoning` trace is
   returned as `content`. Asked `"hello, who are you?"` it replies *"No tool
@@ -128,7 +128,7 @@ docker compose up -d      # live suite against the real engine
 NEEDLE_TEST_BASE_URL=http://127.0.0.1:8000 pytest -m live
 ```
 
-See [Development](https://sirmmo.github.io/needle-openai/development/) and
+See [Development](https://ingmmo.com/needle-openai/development/) and
 [CONTRIBUTING.md](CONTRIBUTING.md).
 
 ## License

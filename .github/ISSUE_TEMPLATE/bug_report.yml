@@ -6,7 +6,7 @@ body:
     attributes:
       value: |
         Before filing: please check the
-        [fidelity notes](https://sirmmo.github.io/needle-openai/fidelity/). Several
+        [fidelity notes](https://ingmmo.com/needle-openai/fidelity/). Several
         surprising behaviours are properties of Needle 2 itself and are documented
         there — no free-form text, ignored sampling parameters, dropped assistant
         messages, silent truncation on long inputs.

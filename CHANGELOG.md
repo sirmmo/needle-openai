@@ -37,7 +37,7 @@ Initial release: an OpenAI-compatible HTTP API for Needle 2 (`cactus-needle`
 ### Notes on behaviour
 
 These follow from the model and its FFI rather than from choices made here; see
-[the fidelity notes](https://sirmmo.github.io/needle-openai/fidelity/) for the
+[the fidelity notes](https://ingmmo.com/needle-openai/fidelity/) for the
 full list.
 
 - **Requests serialize through one thread.** The native engine is a single global
