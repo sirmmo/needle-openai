@@ -68,7 +68,7 @@ def create_app(
 
     app = FastAPI(
         title="needle-openai",
-        version="0.1.0",
+        version="0.1.1",
         description="OpenAI-compatible API for the Needle 2 tool-calling model.",
         lifespan=lifespan,
     )

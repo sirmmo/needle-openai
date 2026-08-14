@@ -6,6 +6,31 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
 
+## [0.1.1] - 2026-08-14
+
+Packaging and release-workflow fixes. No changes to server behaviour.
+
+### Added
+
+- PyPI project metadata: documentation, source, issue and changelog links, plus
+  keywords and trove classifiers. The 0.1.0 project page had no links at all, and
+  PyPI metadata cannot be edited after upload.
+
+### Fixed
+
+- The container's `latest` tag was gated on `{{is_default_branch}}`, which never
+  matches on a tag ref — so no `latest` would ever have been published, while the
+  README tells you to pull it. It now tracks the newest stable tag, excluding
+  prereleases.
+- Publishing jobs are gated on tag refs. A manual `workflow_dispatch` run would
+  otherwise have created a GitHub release named "main"; it is now a safe dry run
+  that builds and checks the distributions only.
+- `pytest` works when invoked bare, not just as `python -m pytest`
+  (`pythonpath = ["."]`).
+- The live test suite no longer requires the server's dependencies. `conftest.py`
+  imported FastAPI at module scope, which made it a hard requirement of the live
+  job even though that job deliberately talks to the container over HTTP only.
+
 ## [0.1.0] - 2026-08-14
 
 Initial release: an OpenAI-compatible HTTP API for Needle 2 (`cactus-needle`
@@ -57,5 +82,6 @@ full list.
 - **Long inputs truncate silently**, returning a confident-looking wrong call with
   `confidence: 0.0`. Gate on `confidence`.
 
-[Unreleased]: https://github.com/sirmmo/needle-openai/compare/v0.1.0...HEAD
+[Unreleased]: https://github.com/sirmmo/needle-openai/compare/v0.1.1...HEAD
+[0.1.1]: https://github.com/sirmmo/needle-openai/compare/v0.1.0...v0.1.1
 [0.1.0]: https://github.com/sirmmo/needle-openai/releases/tag/v0.1.0

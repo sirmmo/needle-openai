@@ -4,11 +4,34 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "needle-openai"
-version = "0.1.0"
+version = "0.1.1"
 description = "OpenAI-compatible HTTP API for the Needle 2 tool-calling model"
 readme = "README.md"
 requires-python = ">=3.10"
 license = { text = "MIT" }
+keywords = [
+    "openai",
+    "openai-api",
+    "needle",
+    "tool-calling",
+    "function-calling",
+    "structured-output",
+    "llm",
+    "edge-ai",
+]
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Framework :: FastAPI",
+    "Intended Audience :: Developers",
+    "License :: OSI Approved :: MIT License",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+    "Topic :: Scientific/Engineering :: Artificial Intelligence",
+    "Topic :: Internet :: WWW/HTTP :: HTTP Servers",
+]
 
 # cactus-needle is deliberately NOT a hard dependency. Inference is a ctypes
 # call into libneedle.so and needs only huggingface_hub, but cactus-needle also
@@ -32,6 +55,12 @@ engine = ["cactus-needle==2.0.3"]
 # Exact prompt-token accounting instead of the character heuristic.
 tokenizer = ["sentencepiece>=0.2"]
 test = ["pytest>=8", "httpx>=0.27"]
+
+[project.urls]
+Documentation = "https://ingmmo.com/needle-openai/"
+Source = "https://github.com/sirmmo/needle-openai"
+Issues = "https://github.com/sirmmo/needle-openai/issues"
+Changelog = "https://github.com/sirmmo/needle-openai/blob/main/CHANGELOG.md"
 
 [project.scripts]
 needle-openai = "needle_openai.__main__:main"

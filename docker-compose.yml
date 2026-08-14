@@ -4,7 +4,7 @@ services:
       context: .
       # Use target `full` for exact token counts (adds sentencepiece).
       target: base
-    image: needle-openai:0.1.0
+    image: needle-openai:0.1.1
     ports:
       - "${NEEDLE_PORT:-8000}:8000"
     environment:
